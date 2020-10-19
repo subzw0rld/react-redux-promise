@@ -9,19 +9,19 @@ import { bindActionCreators } from "redux";
 import { getUsers } from "../../action";
 
 
-export class User extends Component {
+class User extends Component {
+
   componentDidMount() {
     this.props.getUsers();
   }
 
   renderUserList() {
-    console.log(this.props.user);
+    
     if (this.props.user.length) {
       const list = this.props.user[0].data;
 
       return list.map((item, index) => {
-        // console.log(item);
-        const path = `/posts/${item.id}`;
+        const path = `/posts/${item.name}/${item.id}`;
         return (
           <Card key={index}>
             <Card.Header>

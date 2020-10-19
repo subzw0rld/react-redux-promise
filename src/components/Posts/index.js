@@ -1,25 +1,54 @@
 import React, { Component } from "react";
+import Card from "react-bootstrap/Card";
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getPostsByID } from "../../action";
+import "./index.css";
+
 
 // import { GET_USERS } from "../../constants";
 
-export class Posts extends Component {
-  renderUserList(userList) {
-      console.log(userList);
+class Posts extends Component {
+  componentDidMount() {
+    const {
+      match: { params },
+    } = this.props;
+    this.props.getPostsByID(params.userID);
   }
 
   render() {
+    const {
+      match: { params },
+    } = this.props;
+    console.log(this.props.posts);
     return (
       <>
-        <h1>Users List</h1>
-        <ul className="user-list">renderUserList(this.props.getUsers)</ul>
+        <Helmet>
+          <title>{params.username} Posts</title>
+        </Helmet>
+        <h1>{params.username} Posts</h1>
+        {this.props.posts.length
+          ? this.props.posts[0].data.map((item, index) => {
+              return (
+                <Card className="post-card" key={index}>
+                  <Card.Header>{item.title}</Card.Header>
+                  <Card.Body>{item.body}</Card.Body>
+                </Card>
+              );
+            })
+          : `Loading...`}
       </>
     );
   }
 }
 
-function mapStateToProps({ getUsers }) {
-  return { getUsers };
+function mapStateToProps({ posts }) {
+  return { posts };
 }
 
-export default connect(mapStateToProps)(Posts);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ getPostsByID }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
