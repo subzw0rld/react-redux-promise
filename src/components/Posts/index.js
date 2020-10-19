@@ -7,8 +7,6 @@ import { getPostsByID } from "../../action";
 import "./index.css";
 
 
-// import { GET_USERS } from "../../constants";
-
 class Posts extends Component {
   componentDidMount() {
     const {
